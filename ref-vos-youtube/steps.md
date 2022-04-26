@@ -11,7 +11,7 @@
 ```bash
 conda create -n rvos-cpu -y python=3.9
 conda activate rvos-cpu
-pip install numpy scipy pandas jupyter jupyterlab matplotlib seaborn ipdb repackage natsort gpustat
+pip install numpy scipy pandas jupyter jupyterlab matplotlib seaborn ipdb repackage natsort gpustat joblib tqdm
 conda install pytorch torchvision torchaudio cpuonly -c pytorch
 # pip install torch==1.8.1+cu101 torchvision==0.9.1+cu101 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
 ```

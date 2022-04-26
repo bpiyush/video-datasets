@@ -22,6 +22,8 @@ import pdb
 import argparse
 import os
 import json
+from tqdm import tqdm
+from joblib import Parallel, delayed
 
 
 def read_json(json_file):
@@ -79,29 +81,74 @@ def get_aws_link(h):
 yfcc100m_hash = read_hash('data/yfcc100m_hash.txt')
 
 
+def download_video(video):
+    """Downloads video from AWS."""
+    video_id = video.split('_')[1]
+    link = get_aws_link(yfcc100m_hash[video_id])
+    file_path = '%s/%s.mp4' %(args.video_directory, video)
+    
+    if os.path.exists(file_path):
+        return
+    
+    try:
+        request.urlretrieve(link, file_path)
+    except:
+        # print("Could not download link: %s\n" %link)
+        pass
+
+def check_missing(video):
+    """Checks if video is missing from AWS."""
+    video_id = video.split('_')[1]
+    link = get_aws_link(yfcc100m_hash[video_id])
+    file_path = '%s/%s.mp4' %(args.video_directory, video)
+    
+    if os.path.exists(file_path):
+        return None
+
+    try:
+        response = request.urlopen(link)
+    except:
+        # print("Could not download link: %s\n" %link)
+        return video
+
+
+# missing_videos = []
+# for video_count, video in enumerate(videos):
+#      sys.stdout.write('\rDownloading video: %d/%d' %(video_count, len(videos)))
+#      video_id = video.split('_')[1]
+#      link = get_aws_link(yfcc100m_hash[video_id])
+
+#      if args.download:
+#         try:
+#             file_path = '%s/%s.mp4' %(args.video_directory, video)
+#             response = request.urlopen(link)
+#             request.urlretrieve(link, file_path)
+#         except:
+#             print("Could not download link: %s\n" %link)
+#      else:
+#          try:
+#              response = request.urlopen(link)
+#          except:
+#              missing_videos.append(video)
+#              print("Could not find link: %s\n" %link)
+
+
+# Parallelize downloads
 missing_videos = []
-for video_count, video in enumerate(videos):
-     sys.stdout.write('\rDownloading video: %d/%d' %(video_count, len(videos)))
-     video_id = video.split('_')[1]
-     link = get_aws_link(yfcc100m_hash[video_id])
+if args.download:
+    iterator = tqdm(videos, desc='Downloading videos')
+    _ = Parallel(n_jobs=16)(
+        delayed(download_video)(video) for video in iterator
+    )
+else:
+    iterator = tqdm(videos, desc='Finds missing videos')
+    missing_videos = Parallel(n_jobs=16)(
+        delayed(check_missing)(video) for video in iterator
+    )
 
-     if args.download:
-        try:
-            file_path = '%s/%s.mp4' %(args.video_directory, video)
-            response = request.urlopen(link)
-            request.urlretrieve(link, file_path)
-        except:
-            print("Could not download link: %s\n" %link)
-     else:
-         try:
-             response = request.urlopen(link)
-         except:
-             missing_videos.append(video)
-             print("Could not find link: %s\n" %link)
-
-
+missing_videos = [x for x in missing_videos if x is not None]
 if len(missing_videos) > 0:
-    write_txt = open(os.path.join(args.video_directory, 'missing_videos.txt'), 'w')
+    write_txt = open(os.path.join(args.video_directory, '../missing_videos.txt'), 'w')
     for video in missing_videos:
         write_txt.writelines('%s\n' %video)
     write_txt.close()
