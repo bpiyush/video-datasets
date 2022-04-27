@@ -2,6 +2,7 @@
 Class to handle a single video object.
 """
 
+from genericpath import exists
 import numpy as np
 import torch
 import torchvision
@@ -10,7 +11,7 @@ import random
 
 from torchvision.transforms import Compose, ToTensor, Normalize
 
-from video_transforms import ClipToTensor, Resize
+from utils.video_transforms import ClipToTensor, Resize
 
 
 
@@ -62,7 +63,9 @@ class VideoItem:
     def __init__(self, video_path: str) -> None:
         assert isinstance(video_path, str)
         assert video_path.endswith(".mp4") or video_path.endswith(".mkv")
+        assert exists(video_path), "Video file does not exist: {}".format(video_path)
         self.video_path = video_path
+        self.video_container = av.open(video_path)
 
         self.video_transform = [
             Resize(270),
@@ -81,13 +84,18 @@ class VideoItem:
 
         return video_st, video_ft
     
-    def _sample_snippet(self, video_container, video_clip_duration):
+    def _get_duration(self):
+        """Returns the duration of the video."""
+        video_st, video_ft = self._get_time_lims(self.video_container)
+        return float(video_ft - video_st)
+
+    def _sample_snippet(self, video_clip_duration):
         """
         Samples a snippet of duration `video_clip_duration` (secs) from
         the range [t_{s}, t_{f}] within the video. By default, the range
         is [0, video_duration].
         """
-        video_st, video_ft = self._get_time_lims(video_container)
+        video_st, video_ft = self._get_time_lims(self.video_container)
         video_duration = video_ft - video_st
 
         if video_clip_duration > video_duration:
@@ -99,31 +107,26 @@ class VideoItem:
             sample_ss_v = random.uniform(video_st, video_ft - duration)
             return sample_ss_v, duration
 
-    def _get_clip(self, video_ctr, video_start_time, video_clip_duration):
+    def _get_clip(self, clip_start_time, clip_duration, video_fps=None):
         
         sample = {}
 
         frames, fps, start_time = av_load_video(
-            video_ctr,
-            video_fps=None,
-            start_time=video_start_time,
-            duration=video_clip_duration,
+            self.video_container,
+            video_fps=video_fps,
+            start_time=clip_start_time,
+            duration=clip_duration,
         )
         if self.video_transform is not None:
             for t in self.video_transform:
                 frames = t(frames)
 
         sample['frames'] = frames
-        sample['fps'] = fps.numerator / fps.denominator
+        sample['fps'] = float(fps)
         sample['start_time'] = start_time
-        sample['duration'] = video_clip_duration
+        sample['duration'] = clip_duration
 
         return sample
-
-    def load_video(self, video_path):
-        """Loads the container of the video."""
-        video_container = av.open(video_path)
-        return video_container
 
 
 if __name__ == "__main__":
@@ -132,16 +135,16 @@ if __name__ == "__main__":
     print("Loading video at {}".format(video_path))
     video_item = VideoItem(video_path)
 
-    video_container = video_item.load_video(video_path)
+    video_container = video_item.video_container
 
     video_st, video_ft = video_item._get_time_lims(video_container)
     video_duration = float(video_ft - video_st)
     print("The video duration is: {}".format(video_duration))
 
-    sample_ss_v, duration = video_item._sample_snippet(video_container, 10.)
-    clip = video_item._get_clip(video_container, sample_ss_v, duration)
+    sample_ss_v, duration = video_item._sample_snippet(10.)
+    clip = video_item._get_clip(sample_ss_v, duration)
 
-    clip = video_item._get_clip(video_container, 2.31, 1.)
+    clip = video_item._get_clip(2.31, 1.)
     assert clip["frames"].shape == torch.Size([3, 29, 270, 360])
     assert clip["duration"] == 1.
     assert clip["start_time"] == 2.3023000000000002

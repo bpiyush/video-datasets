@@ -28,7 +28,7 @@ def denormalize(x: torch.Tensor, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 
     return denormalize_transform(x)
 
 
-def show_single_image(x: torch.Tensor, figsize=None, normalized=True, title="Sample image", show=True, ax=None, **imshow_kwargs):
+def show_single_image(x: torch.Tensor, figsize=None, normalized=False, title="Sample image", xlabel="", show=True, ax=None, **imshow_kwargs):
     """Displays a single image."""
 
     assert len(x.shape) in [1, 3]
@@ -50,6 +50,7 @@ def show_single_image(x: torch.Tensor, figsize=None, normalized=True, title="Sam
     ax.set_title(title, fontsize=16, fontweight="bold")
     ax.set_xticks([])
     ax.set_yticks([])
+    ax.set_xlabel(xlabel, fontsize=14)
 
     if show:
         plt.show()
