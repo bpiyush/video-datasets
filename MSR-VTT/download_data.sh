@@ -1,5 +1,31 @@
-# set root data folder
-data_root=/ssd/pbagad/datasets/MSR-VTT/
+# read arguments from the user
+while getopts ":d:h" opt; do
+  case $opt in
+    d)
+      data_root=$OPTARG
+      ;;
+    h)
+      echo "Usage: download_data.sh -d <dataset path>"
+      echo "  -d <data_root>  : dataset path to download to"
+      exit 0
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+# set root data folder: set default
+if [ -z "$data_root" ]; then
+  data_root=/ssd/pbagad/datasets/MSR-VTT/
+fi
+echo ">>> Downloading MSR-VTT dataset to $data_root"
+exit
 mkdir -p $data_root
 
 # download splits
