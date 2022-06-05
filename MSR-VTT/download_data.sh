@@ -47,3 +47,10 @@ unzip MSRVTT.zip
 rm -rf MSRVTT.zip
 echo "Downloaded raw videos for MSR-VTT"
 ls -l $data_root/MSRVTT/
+
+
+echo ">>> Dataset statistics:"
+echo "Number of train videos  : $(cat $data_root/MSRVTT/videos/train_list_new.txt | wc -l)"
+echo "Number of test videos   : $(cat $data_root/MSRVTT/videos/test_list_new.txt | wc -l)"
+echo "Total number of videos  : $(ls $data_root/MSRVTT/videos/all/ | wc -l)"
+echo "Total size of the videos: $(du -sh $data_root/MSRVTT/videos/all/ | awk '{print $1}')"
