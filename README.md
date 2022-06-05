@@ -5,7 +5,7 @@ Common place to download, pre-process and standardise video datasets.
 ## Setup
 
 Create a `conda` environment with the following packages:
-```bash
+```console
 conda create -y -n base-video python=3.9
 conda activate base-video
 conda install -y -c conda-forge ffmpeg
@@ -18,7 +18,7 @@ pip install numpy pillow matplotlib pandas scipy PyYAML tqdm termcolor natsort f
 ### [MSR-VTT](https://www.microsoft.com/en-us/research/publication/msr-vtt-a-large-video-description-dataset-for-bridging-video-and-language/)
 
 * Download splits and raw videos
-  ```bash
+  ```zsh
   bash MSRVTT/download_data.sh
   ```
   :hourglass: This takes about 10-30 minutes (depending on your internet connection).
