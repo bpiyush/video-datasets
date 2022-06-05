@@ -10,7 +10,16 @@ conda create -y -n base-video python=3.9
 conda activate base-video
 conda install -y -c conda-forge ffmpeg
 pip install opencv-python av
-pip install numpy pillow matplotlib pandas scipy PyYAML tqdm termcolor natsort ftfy regex
+pip install numpy pillow matplotlib pandas scipy PyYAML tqdm termcolor natsort ftfy regex ipython jupyterlab ipdb seaborn
+
+# for latex fonts in matplotlib
+conda install -y -c conda-forge texlive-core
+```
+
+Set `PYTHONPATH` as the repo-folder:
+```zsh
+cd /path/to/video-datasets
+export PYTHONPATH=$PWD
 ```
 
 ## Downloads
