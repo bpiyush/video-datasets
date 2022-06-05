@@ -11,12 +11,30 @@ import matplotlib.colors as mc
 from matplotlib import rc
 import seaborn as sns
 
-import torch
-from torchvision import transforms
+
+def set_latex_fonts(usetex=True, fontsize=14, show_sample=False, **kwargs):
+    try:
+        plt.rcParams.update({
+            "text.usetex": usetex,
+            "font.family": "serif",
+            "font.serif": ["Computer Modern Roman"],
+            "font.size": fontsize,
+            **kwargs,
+        })
+        if show_sample:
+            plt.figure()
+            plt.title("Sample $y = x^2$")
+            plt.plot(np.arange(0, 10), np.arange(0, 10)**2, "--o")
+            plt.grid()
+            plt.show()
+    except:
+        print("Failed to setup LaTeX fonts. Proceeding without.")
+        pass
 
 
-def denormalize(x: torch.Tensor, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
+def denormalize(x, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
     """Denormalizes an image."""
+    from torchvision import transforms
 
     mean = np.array(mean)
     std = np.array(std)
@@ -28,7 +46,7 @@ def denormalize(x: torch.Tensor, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 
     return denormalize_transform(x)
 
 
-def show_single_image(x: torch.Tensor, figsize=None, normalized=False, title="Sample image", xlabel="", show=True, ax=None, **imshow_kwargs):
+def show_single_image(x, figsize=None, normalized=False, title="Sample image", xlabel="", show=True, ax=None, **imshow_kwargs):
     """Displays a single image."""
 
     assert len(x.shape) in [1, 3]
