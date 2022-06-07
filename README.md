@@ -31,3 +31,10 @@ export PYTHONPATH=$PWD
   bash MSRVTT/download_data.sh
   ```
   :hourglass: This takes about 10-30 minutes (depending on your internet connection).
+
+
+
+
+### [MAD](https://github.com/Soldelli/MAD)
+
+* Download splits and CLIP features from [official repository](https://github.com/Soldelli/MAD). It needs filling NDA and manually downloading.
