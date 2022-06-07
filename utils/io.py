@@ -6,6 +6,7 @@ from typing import Any, List
 import yaml
 import pickle
 import json
+import pandas as pd
 
 
 class PrettySafeLoader(yaml.SafeLoader):
@@ -114,3 +115,9 @@ def save_txt(data: dict, path: str):
     lines = "\n".join(data)
     with open(path, "w") as f:
         f.write(str(lines))
+
+
+def read_spreadsheet(sheet_id, gid, gid_key="granularity", **kwargs):
+    BASE_URL = 'https://docs.google.com/spreadsheets/d/'
+    df = df = pd.read_csv(BASE_URL + sheet_id + f'/export?gid={gid}&format=csv', **kwargs)
+    return df
