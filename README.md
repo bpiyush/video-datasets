@@ -49,3 +49,16 @@ export PYTHONPATH=$PWD
   rm HowTo100M.zip
   ```
   :hourglass: This takes about 5-10 minutes (download size: 1.9GBs) (depending on your internet connection).
+
+
+### [VATEX](https://eric-xw.github.io/vatex-website/download.html)
+
+* Download split files
+  ```zsh
+  cd /ssd/pbagad/datasets/
+  mkdir vatex
+  cd vatex
+  wget https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json
+  wget https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json
+  wget https://eric-xw.github.io/vatex-website/data/vatex_public_test_english_v1.1.json
+  ```
