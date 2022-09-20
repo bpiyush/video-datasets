@@ -1,0 +1,14 @@
+This zip file contains a text file 'howto100m_videos.txt' containing a list of 
+links per video. If you only want to download a subset of the videos,
+just keep the videos urls that you are interested in.
+
+To download the videos, just run:
+
+wget --user user --password password -i howto100m_videos.txt
+
+(replace user and password by your given credentials).
+
+This will download 1.2M of videos for a total of 12.5Tb.
+Please also use a single machine to download the data.
+
+Speed-up note: some people notice download speed ups when replacing the video urls with HTTPS instead of HTTP. Please consider that if you find the downloading slow.
