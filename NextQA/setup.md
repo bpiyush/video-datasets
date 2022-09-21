@@ -1,0 +1,26 @@
+[NextQA Dataset]()
+
+* Download set of training and validation video zips from [VIDOR page](https://xdshang.github.io/docs/vidor.html). I had to do this manually since `wget` didn't work for me.
+* Move to a central location
+```sh
+data_root=/Users/piyush/datasets/
+cd $data_root
+mkdir next-qa
+cd next-qa
+mkdir zips
+
+# move the downloaded zips to this folder
+# and unzip them
+```
+* Download mapping from VIDOR to NextQA 
+```sh
+gdown --id 1NFAOQYZ-D0LOpcny8fm0fSzLvN0tNR2A
+du -sh map_vid_vidorID.json
+```
+* Download open-ended questions
+```sh
+gdown --id 1wOhytywctSY0WV18g5v4OttyX1TEY8j9
+unzip nextqa.zip
+rm nextqa.zip
+```
+* Download test set for NextQA from the [official homepage](https://doc-doc.github.io/docs/nextqa.html).
