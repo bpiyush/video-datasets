@@ -19,3 +19,11 @@ wget $url -O $data_root/HowTo100M.zip
 unzip $data_root/HowTo100M.zip -d $data_root
 rm -rf $data_root/HowTo100M.zip
 ```
+* Generate S3D features (based on `fairseq/examples/MMPT` repo from FAIR (see my repo `Test-of-Time-dev/external` for this.
+```sh
+cd external/fairseq/examples/MMPT/
+vdir=/var/scratch/pbagad/datasets/howto100m/videos/
+fdir=/var/scratch/pbagad/datasets/howto100m/feat/feat_how2_s3d/
+mkdir -p $fdir
+python scripts/video_feature_extractor/extract.py --vdir $vdir --fdir $fdir --type=s3d --num_decoding_thread=4 --batch_size 32 --half_precision 1
+```
