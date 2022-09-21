@@ -10,6 +10,10 @@ cd next-qa
 mkdir zips
 
 # move the downloaded zips to this folder
+mv /path/to/downloads/training-video-part*.zip $data_root/next-qa/zips/
+mv /path/to/downloads/validation-video.zip $data_root/next-qa/zips/
+mv /path/to/downloads/test-data-nextqa.zip $data_root/next-qa/zips 
+
 # and unzip them
 ```
 * Download mapping from VIDOR to NextQA 
