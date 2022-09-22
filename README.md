@@ -22,6 +22,25 @@ cd /path/to/video-datasets
 export PYTHONPATH=$PWD
 ```
 
+
+## Installing `ffmpeg`
+
+* [Reference](https://johnvansickle.com/ffmpeg/)
+* [Instructions](https://www.johnvansickle.com/ffmpeg/faq/)
+
+```sh
+wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-i686-static.tar.xz
+wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-i686-static.tar.xz.md5
+md5sum -c ffmpeg-release-i686-static.tar.xz.md5
+
+tar xvf ffmpeg-release-i686-static.tar.xz
+
+# add aliases
+alias ffmpeg="/var/scratch/pbagad/install/ffmpeg-5.1.1-i686-static/ffmpeg"
+alias ffprobe="/var/scratch/pbagad/install/ffmpeg-5.1.1-i686-static/ffprobe"
+```
+
+
 ## Downloads
 
 ### [MSR-VTT](https://www.microsoft.com/en-us/research/publication/msr-vtt-a-large-video-description-dataset-for-bridging-video-and-language/)
