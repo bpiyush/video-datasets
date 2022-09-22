@@ -38,6 +38,9 @@ tar xvf ffmpeg-release-i686-static.tar.xz
 # add aliases
 alias ffmpeg="/var/scratch/pbagad/install/ffmpeg-5.1.1-i686-static/ffmpeg"
 alias ffprobe="/var/scratch/pbagad/install/ffmpeg-5.1.1-i686-static/ffprobe"
+
+# OR add to the PATH variable
+export PATH=$PATH:/var/scratch/pbagad/install/ffmpeg-5.1.1-i686-static/
 ```
 
 
