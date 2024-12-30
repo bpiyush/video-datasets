@@ -25,7 +25,6 @@ if [ -z "$data_root" ]; then
   data_root=/ssd/pbagad/datasets/MSR-VTT/
 fi
 echo ">>> Downloading MSR-VTT dataset to $data_root"
-exit
 mkdir -p $data_root
 
 # download splits
